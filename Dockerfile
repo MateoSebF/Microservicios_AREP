@@ -6,6 +6,7 @@ WORKDIR /app
 # Copiar los archivos del proyecto y compilar
 COPY pom.xml .
 COPY src ./src
+COPY .env .env  # Copiar el archivo .env dentro del contenedor
 RUN mvn clean package -U -DskipTests
 
 # Etapa 2: Imagen más ligera con Java 21 para ejecutar la aplicación
