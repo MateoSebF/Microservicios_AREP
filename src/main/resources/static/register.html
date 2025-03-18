@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Mini Twitter</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow-lg p-4">
+                    <h2 class="text-center mb-4">Mini Twitter</h2>
+                    <h4 class="text-center text-muted">Register</h4>
+                    <form>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" class="form-control" placeholder="Enter your username">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" class="form-control" placeholder="Enter your password">
+                        </div>
+                        <button type="button" onclick="registerUser()" class="btn btn-success btn-block">Register</button>
+                    </form>
+                    <p class="text-center mt-3">Already have an account? <a href="index.html">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

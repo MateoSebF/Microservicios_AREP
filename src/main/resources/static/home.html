@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Mini Twitter</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body class="d-flex flex-column col-12 m-0 p-0 h-auto">
+    <div id="title" class="col-12">
+        <h1 class="col-6 my-4 mx-auto text-center">Welcome to Mini Twitter</h1>
+    </div>
+    <div class="d-flex flex-row col-10 mx-auto h-auto">
+        <div id="content" class="col-8 border p-0 m-0">
+            <div class="border-bottom row m-0 p-0">
+                <div id="userDetails" class="col-10 mx-auto my-3 d-flex flex-row justify-content-between">
+                    <h2 class="my-auto" id="welcomeMessage"></h2>
+                    <button class="btn btn-primary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            <div class="col-12 row m-0 p-0">
+                <div id="tweets" class="col-12 border-block p-0 m-0 my-1">
+                    <h2 class="col-12 text-center my-5">Streams</h2>
+                    <div id="streams"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-4 h-auto">
+            <form id="streamMake" class="border position-sticky top-0 h-auto">
+                <h2 class="m-3 text-center">Create a New Stream</h2>
+                <div class="input-group my-3 col-12">
+                    <input type="text" id="streamTitle" class="col-6 form-control h-auto" placeholder="Stream Title"
+                        aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button onclick="createStream()" class="col-6 btn btn-outline-secondary" type="button" id="button-addon2">Create Stream</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
