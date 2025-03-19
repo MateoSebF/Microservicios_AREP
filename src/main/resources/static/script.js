@@ -1,5 +1,9 @@
 const API_URL = "http://localhost:8080"; // Cambia esto si el backend está en otro dominio
 
+function login(){
+    window.location.href='/oauth2/authorization/cognito'
+}
+
 // Login User
 async function loginUser() {
     const email = document.getElementById("loginEmail").value;
