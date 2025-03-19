@@ -166,3 +166,17 @@ document.addEventListener("DOMContentLoaded", function () {
         form.style.top = `${Math.max(offset, 20)}px`; // Mantiene la distancia inicial (mínimo 20px)
     });
 });
+
+async function checkAuth() {
+    try {
+        const response = await fetch(`${API_URL}/me`, { credentials: "include" });
+        if (response.ok) {
+            window.location.href = "/home.html"; // Redirigir a home si está autenticado
+        }
+    } catch (error) {
+        console.error("Error checking authentication:", error);
+    }
+}
+
+// Ejecutar al cargar la página
+window.onload = checkAuth;
