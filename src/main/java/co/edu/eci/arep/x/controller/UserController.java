@@ -27,9 +27,11 @@ public class UserController {
         if (oidcUser == null) {
             return ResponseEntity.status(401).body("No autenticado");
         }
+        System.out.println("OIDC User Attributes: " + oidcUser.getAttributes());
 
         String email = oidcUser.getEmail();
         String username = oidcUser.getPreferredUsername(); // Esto depende de la configuración de Cognito
+
 
         User user = userService.registerUserIfNotExists(username, email);
         return ResponseEntity.ok(user);
