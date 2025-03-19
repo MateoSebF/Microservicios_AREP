@@ -6,21 +6,9 @@ function login() {
 }
 
 function logout() {
-    fetch(API_URL+"/logout", { 
-        method: "GET", 
-        credentials: "include" 
-    })
-    .then(response => {
-        // Como el backend hace un redirect, la respuesta no vendrá como JSON, pero podemos verificar si fue exitosa
-        if (response.redirected) {
-            window.location.href = response.url; // Redirige a la URL de Cognito/logout
-        } else {
-            console.error("Logout failed");
-            alert("Error logging out.");
-        }
-    })
-    .catch(error => console.error("Logout error:", error));
-}
+    window.location.href = "https://backendeci.duckdns.org:8080/logout";
+
+    }
 
 
 
