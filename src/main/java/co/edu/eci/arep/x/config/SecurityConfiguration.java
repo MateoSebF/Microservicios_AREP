@@ -30,9 +30,6 @@ public class SecurityConfiguration {
                 .userInfoEndpoint(userInfo -> userInfo.oidcUserService(new OidcUserService()))
                 .defaultSuccessUrl("/home.html", true) // Redirect after login
             )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Ensures token-based authentication
-            )
             .logout(logout -> logout
                 .logoutSuccessHandler(cognitoLogoutHandler) // Handle logout with Cognito
             );
