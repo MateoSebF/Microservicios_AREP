@@ -6,7 +6,7 @@ function login() {
 }
 
 function logout() {
-    fetch(`${API_URL}/logout`, { credentials: "include" })
+    fetch(`https://us-east-13lagh3i29.auth.us-east-1.amazoncognito.com/logout`, { credentials: "include" })
         .then(response => {
             if (response.ok) {
                 window.location.href = '/index.html';
@@ -118,7 +118,7 @@ async function loadPosts(streamId) {
         // Formatear timestamp
         const titlePost = document.createElement("h6");
         titlePost.classList.add("text-muted");
-        const timestamp = new Date(post.timestamp);
+        const timestamp = new Date(post.timestamp*1000);
         titlePost.innerHTML = `<strong>@${userData.username}</strong> - ${timestamp.toLocaleString()}`;
 
         const contentPost = document.createElement("p");
