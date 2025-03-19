@@ -55,6 +55,7 @@ async function loadStreams() {
 
 // Crear un Post dentro de un Stream
 async function createPost(streamId) {
+    console.log("Creating post for stream", streamId);
     const content = document.getElementById(`postContent-${streamId}`).value;
     const userResponse = await fetch(`${API_URL}/users/me`, { credentials: "include" });
     const userData = await userResponse.json();
