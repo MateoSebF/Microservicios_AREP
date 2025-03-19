@@ -1,74 +1,21 @@
-const API_URL = "http://localhost:8080"; // Cambia esto si el backend está en otro dominio
+const API_URL = "https://backendeci.duckdns.org:8080";
 
-function login(){
-    window.location.href='/oauth2/authorization/cognito'
+// Redirige al login de Cognito
+function login() {
+    window.location.href = '/oauth2/authorization/cognito';
 }
-
-// Login User
-async function loginUser() {
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-
-    const response = await fetch(`${API_URL}/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        localStorage.setItem("token", data.id); // Guarda el token
-        window.location.href = "home.html"; // Redirige a home
-    } else {
-        alert("Invalid credentials.");
-    }
-}
-
-// Register User
-async function registerUser() {
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    const response = await fetch(`${API_URL}/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password })
-    });
-
-    if (response.ok) {
-        alert("User registered! You can now log in.");
-        window.location.href = "index.html";
-    } else {
-        alert("Error registering user.");
-    }
-}
-
-// Logout User
-function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "index.html";
-}
-
 
 // Crear un nuevo Stream
 async function createStream() {
     const title = document.getElementById("streamTitle").value;
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        alert("You need to log in first.");
-        return;
-    }
 
     const response = await fetch(`${API_URL}/streams`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify({ title })
+        body: JSON.stringify({ title }),
+        credentials: "include" // Enviar cookies (JSESSIONID)
     });
 
     if (response.ok) {
@@ -81,7 +28,7 @@ async function createStream() {
 
 // Cargar Streams y sus Posts
 async function loadStreams() {
-    const response = await fetch(`${API_URL}/streams`);
+    const response = await fetch(`${API_URL}/streams`, { credentials: "include" });
     const streams = await response.json();
 
     const streamContainer = document.getElementById("streams");
@@ -89,15 +36,13 @@ async function loadStreams() {
 
     streams.forEach(stream => {
         const streamElement = document.createElement("div");
-        streamElement.classList.add("border-top");
-        streamElement.classList.add("my-1");
-        streamElement.classList.add("stream");
+        streamElement.classList.add("border-top", "my-1", "stream");
         streamElement.innerHTML = `
             <div class="col-11 my-4 mx-auto d-flex flex-column">
                 <h3>${stream.title}</h3>
                 <div id="posts-${stream.id}" class="posts"></div>
                 <div class="border-top d-flex flex-column">
-                    <textarea class="special-text-area my-3 " id="postContent-${stream.id}" placeholder="Write something..."></textarea>
+                    <textarea class="special-text-area my-3" id="postContent-${stream.id}" placeholder="Write something..."></textarea>
                     <button class="btn btn-secondary ml-auto col-2" onclick="createPost('${stream.id}')">Post</button>
                 </div>
             </div>
@@ -111,24 +56,17 @@ async function loadStreams() {
 // Crear un Post dentro de un Stream
 async function createPost(streamId) {
     const content = document.getElementById(`postContent-${streamId}`).value;
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        alert("You need to log in first.");
-        return;
-    }
+    const userResponse = await fetch(`${API_URL}/users/me`, { credentials: "include" });
+    const userData = await userResponse.json();
+    const userId = userData.id;
 
     const response = await fetch(`${API_URL}/streams/${streamId}/posts`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify({ 
-            userId: token,
-            content: content,
-            timestamp: new Date().toISOString
-        })
+        body: JSON.stringify({ userId: userId, content: content, timestamp: new Date().toISOString() }),
+        credentials: "include" // Enviar cookies (JSESSIONID)
     });
 
     if (response.ok) {
@@ -139,13 +77,14 @@ async function createPost(streamId) {
     }
 }
 
+// Cargar Posts
 async function loadPosts(streamId) {
     console.log("Loading posts for stream", streamId);
-    const response = await fetch(`${API_URL}/streams/${streamId}/posts`);
+    const response = await fetch(`${API_URL}/streams/${streamId}/posts`, { credentials: "include" });
     let posts = await response.json();
 
-    // Ordenar los posts por timestamp (mas viejo primero)
-    posts.sort((a, b) => a.timestamp - b.timestamp);
+    // Ordenar los posts por timestamp (más viejo primero)
+    posts.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
     const postContainer = document.getElementById(`posts-${streamId}`);
     postContainer.innerHTML = "";
@@ -153,8 +92,8 @@ async function loadPosts(streamId) {
     for (const post of posts) {
         console.log(post);
 
-        // Obtener información del usuario
-        const userResponse = await fetch(`${API_URL}/users/id/${post.userId}`);
+        // Obtener información del usuario autenticado
+        const userResponse = await fetch(`${API_URL}/users/${post.userId}`, { credentials: "include" });
         const userData = await userResponse.json();
 
         // Crear post
@@ -164,7 +103,7 @@ async function loadPosts(streamId) {
         // Formatear timestamp
         const titlePost = document.createElement("h6");
         titlePost.classList.add("text-muted");
-        const timestamp = new Date(post.timestamp * 1000);
+        const timestamp = new Date(post.timestamp);
         titlePost.innerHTML = `<strong>@${userData.username}</strong> - ${timestamp.toLocaleString()}`;
 
         const contentPost = document.createElement("p");
@@ -175,20 +114,30 @@ async function loadPosts(streamId) {
         postContainer.appendChild(postElement);
     }
 }
-// Load posts when page loads (only for home.html)
-if (window.location.pathname.endsWith("home.html")) {
-    const getInfo = async () => {
-        const welcome = document.getElementById("welcomeMessage");
-        const token = localStorage.getItem("token");
-        const user = await fetch(`${API_URL}/users/id/${token}`);
-        const userData = await user.json();
+
+// Obtener usuario autenticado
+async function getUserInfo() {
+    const welcome = document.getElementById("welcomeMessage");
+
+    try {
+        const response = await fetch(`${API_URL}/users/me`, { credentials: "include" });
+        if (!response.ok) throw new Error("User not authenticated");
+
+        const userData = await response.json();
         welcome.innerHTML = `Welcome, ${userData.username}!`;
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        welcome.innerHTML = "Not logged in";
     }
-    getInfo();
+}
+
+// Cargar datos al iniciar
+if (window.location.pathname.endsWith("home.html")) {
+    getUserInfo();
     window.onload = loadStreams;
 }
 
-
+// Hacer que el formulario de crear stream sea fijo al hacer scroll
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("streamMake");
     const offset = form.getBoundingClientRect().top; // Distancia inicial desde la parte superior
