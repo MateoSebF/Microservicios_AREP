@@ -18,12 +18,12 @@ public class CognitoLogoutHandler extends SimpleUrlLogoutSuccessHandler {
     /**
      * The domain of your user pool.
      */
-    private String domain = "https://<user pool domain>";
+    private String domain = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_3LaGh3i29";
 
     /**
      * An allowed callback URL.
      */
-    private String logoutRedirectUrl = "<logout uri>";
+    private String logoutRedirectUrl = "https://backendeci.duckdns.org:8080/index.html";
 
     /**
      * The ID of your User Pool Client.

@@ -2,9 +2,9 @@ package co.edu.eci.arep.x.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -22,12 +22,18 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         CognitoLogoutHandler cognitoLogoutHandler = new CognitoLogoutHandler();
 
-        http.csrf(Customizer.withDefaults())
+        http
+                .csrf(AbstractHttpConfigurer::disable) // Deshabilita CSRF si no es necesario
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/index.html", "/styles.css", "/script.js").permitAll() // Archivos públicos
-                        .anyRequest().authenticated())
-                .oauth2Login(Customizer.withDefaults())
-                .logout(logout -> logout.logoutSuccessHandler(cognitoLogoutHandler));
+                        .requestMatchers("/", "/index.html", "/styles.css", "/script.js").permitAll() // Rutas públicas
+                        .anyRequest().authenticated() // Todo lo demás requiere autenticación
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/home.html", true) // Redirigir a home después del login
+                )
+                .logout(logout -> logout
+                        .logoutSuccessHandler(cognitoLogoutHandler) // Manejo de logout con Cognito
+                );
 
         return http.build();
     }
