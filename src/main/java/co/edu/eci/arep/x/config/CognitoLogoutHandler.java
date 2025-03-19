@@ -18,7 +18,7 @@ public class CognitoLogoutHandler extends SimpleUrlLogoutSuccessHandler {
     /**
      * The domain of your user pool.
      */
-    private String domain = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_3LaGh3i29";
+    private String domain = "https://us-east-13lagh3i29.auth.us-east-1.amazoncognito.com";
 
     /**
      * An allowed callback URL.

@@ -5,6 +5,22 @@ function login() {
     window.location.href = '/oauth2/authorization/cognito';
 }
 
+function logout() {
+    fetch(`${API_URL}/logout`, { method: "POST", credentials: "include" })
+        .then(response => {
+            if (response.redirected) {
+                // Si el servidor redirige a Cognito, seguir la redirección
+                window.location.href = response.url;
+            } else if (response.ok) {
+                // Si el logout es exitoso, redirigir manualmente
+                window.location.href = "/index.html";
+            } else {
+                alert("Error logging out.");
+            }
+        })
+        .catch(error => console.error("Logout error:", error));
+}
+
 // Crear un nuevo Stream
 async function createStream() {
     const title = document.getElementById("streamTitle").value;
