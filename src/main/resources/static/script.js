@@ -168,19 +168,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-async function checkAuth() {
-    try {
-        const response = await fetch(`${API_URL}`, { credentials: "include" });
-        if (response.ok) {
-            window.location.href = "/home.html"; // Redirigir a home si está autenticado
-        }
-    } catch (error) {
-        console.error("Error checking authentication:", error);
-    }
-}
-
-// Ejecutar al cargar la página
-if (window.location.pathname.endsWith("index.html")) {
-    window.onload = checkAuth;
-}
-
