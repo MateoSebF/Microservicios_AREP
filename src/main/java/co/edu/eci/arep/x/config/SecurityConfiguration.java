@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                         .authenticationEntryPoint((request, response, authException) -> {
                             String requestURI = request.getRequestURI();
                             if (!requestURI.equals("/") && !requestURI.equals("/index.html")) {
+                                System.out.println("Redirecting to /index.html");   
                                 response.sendRedirect("/index.html");
                             }
                         }))
