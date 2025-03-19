@@ -28,10 +28,12 @@ public class SecurityConfiguration {
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
-                            if (!request.getRequestURI().equals("/index.html")) {
-                                response.sendRedirect("/index.html"); // Redirect to index.html if not authenticated
+                            String requestURI = request.getRequestURI();
+                            if (!requestURI.equals("/") && !requestURI.equals("/index.html")) {
+                                response.sendRedirect("/index.html");
                             }
                         }))
+
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo.oidcUserService(new OidcUserService()))
                         .defaultSuccessUrl("/home.html", true) // Redirect after login
