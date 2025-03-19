@@ -28,7 +28,9 @@ public class SecurityConfiguration {
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("/index.html"); // Redirect to index.html if not authenticated
+                            if (!request.getRequestURI().equals("/index.html")) {
+                                response.sendRedirect("/index.html"); // Redirect to index.html if not authenticated
+                            }
                         }))
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo.oidcUserService(new OidcUserService()))
