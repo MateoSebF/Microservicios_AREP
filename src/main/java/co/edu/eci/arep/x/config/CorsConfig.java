@@ -35,7 +35,8 @@ public class CorsConfig implements WebMvcConfigurer {
                 "https://localhost:8080", 
                 "https://backendeci.duckdns.org:8080", 
                 "https://frontendeci.duckdns.org:80", 
-                "https://frontendeci.duckdns.org:443"));
+                "https://frontendeci.duckdns.org:443",
+                "https://us-east-13lagh3i29.auth.us-east-1.amazoncognito.com"));
         config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         source.registerCorsConfiguration("/**", config);
