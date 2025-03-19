@@ -17,7 +17,11 @@ public class AuthController {
         if (authentication != null && authentication.isAuthenticated()) {
             response.sendRedirect("/home.html"); // Redirigir si ya está autenticado
         } else {
-            response.sendRedirect("/index.html"); // Enviar a index.html si no está autenticado
+            if (request.getRequestURI().equals("/index.html")) {
+            }
+            else {
+                response.sendRedirect("/index.html"); // Enviar a index.html si no está autenticado
+            }
         }
     }
 }

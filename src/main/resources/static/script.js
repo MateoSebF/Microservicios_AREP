@@ -106,10 +106,8 @@ async function loadPosts(streamId) {
     for (const post of posts) {
         console.log(post);
 
-        const response = await fetch(`${API_URL}/users/me`, { credentials: "include" });
-        if (!response.ok) throw new Error("User not authenticated");
-
-        const userData = await response.json();
+        const userResponse = await fetch(`${API_URL}/users/id/${post.userId}`, { credentials: "include" });
+        const userData = await userResponse.json();
 
         // Crear post
         const postElement = document.createElement("div");
