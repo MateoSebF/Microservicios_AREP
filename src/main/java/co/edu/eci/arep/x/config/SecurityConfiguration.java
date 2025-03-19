@@ -40,7 +40,8 @@ public class SecurityConfiguration {
                         .defaultSuccessUrl("/home.html", true) // Redirect after login
                 )
                 .logout(logout -> logout
-                        .logoutSuccessHandler(cognitoLogoutHandler) // Handle logout with Cognito
+                    .logoutUrl("/logout") // Endpoint de logout
+                    .logoutSuccessHandler(cognitoLogoutHandler) // Usa CognitoLogoutHandler
                 );
 
         return http.build();
