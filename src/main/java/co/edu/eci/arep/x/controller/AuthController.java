@@ -21,7 +21,7 @@ public class AuthController {
         // Redirige a Cognito para cerrar sesión completamente
         String clientId = "57a363flss9rbedmjc6g16gd9n"; // Reemplázalo con tu Client ID real
         String logoutRedirectUri = "https://backendeci.duckdns.org:8080/index.html";
-        String logoutUrl = "https://us-east-1_3LaGh3i29.auth.us-east-1.amazoncognito.com/logout"
+        String logoutUrl = "https://us-east-13lagh3i29.auth.us-east-1.amazoncognito.com/logout"
                 + "?client_id=" + clientId
                 + "&logout_uri=" + logoutRedirectUri;
 
