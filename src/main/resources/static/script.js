@@ -6,16 +6,20 @@ function login() {
 }
 
 function logout() {
-    fetch(`https://us-east-13lagh3i29.auth.us-east-1.amazoncognito.com/logout`, { credentials: "include" })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = '/index.html';
-            } else {
-                alert("Error logging out.");
-            }
-        })
-        .catch(error => console.error("Logout error:", error));
+    fetch("https://backendeci.duckdns.org:8080/logout", { 
+        method: "GET", 
+        credentials: "include" 
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = "/index.html"; // Redirige al usuario después del logout
+        } else {
+            alert("Error logging out.");
+        }
+    })
+    .catch(error => console.error("Logout error:", error));
 }
+
 
 
 // Crear un nuevo Stream
