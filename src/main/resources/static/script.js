@@ -6,20 +6,17 @@ function login() {
 }
 
 function logout() {
-    fetch(`${API_URL}/logout`, { method: "POST", credentials: "include" })
+    fetch(`${API_URL}/logout`, { credentials: "include" })
         .then(response => {
-            if (response.redirected) {
-                // Si el servidor redirige a Cognito, seguir la redirección
-                window.location.href = response.url;
-            } else if (response.ok) {
-                // Si el logout es exitoso, redirigir manualmente
-                window.location.href = "/index.html";
+            if (response.ok) {
+                window.location.href = '/index.html';
             } else {
                 alert("Error logging out.");
             }
         })
         .catch(error => console.error("Logout error:", error));
 }
+
 
 // Crear un nuevo Stream
 async function createStream() {
@@ -169,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function checkAuth() {
     try {
-        const response = await fetch(`${API_URL}/me`, { credentials: "include" });
+        const response = await fetch(`${API_URL}/users/me`, { credentials: "include" });
         if (response.ok) {
             window.location.href = "/home.html"; // Redirigir a home si está autenticado
         }
@@ -179,4 +176,7 @@ async function checkAuth() {
 }
 
 // Ejecutar al cargar la página
-window.onload = checkAuth;
+if (window.location.pathname.endsWith("index.html")) {
+    window.onload = checkAuth;
+}
+
