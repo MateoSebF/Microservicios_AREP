@@ -30,7 +30,13 @@ public class UserController {
         System.out.println("OIDC User Attributes: " + oidcUser.getAttributes());
 
         String email = oidcUser.getEmail();
-        String username = oidcUser.getPreferredUsername(); // Esto depende de la configuración de Cognito
+        String username = (String) oidcUser.getAttributes().get("cognito:username");
+        if (username == null) {
+            username = (String) oidcUser.getAttributes().get("username");
+        }
+        if (username == null) {
+            username = email; // Fallback al email si no hay username
+        }
 
 
         User user = userService.registerUserIfNotExists(username, email);
